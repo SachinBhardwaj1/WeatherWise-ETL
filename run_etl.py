@@ -1,9 +1,10 @@
 from etl.pipeline import run_pipeline
 
-API_KEY = 'openweather_api_key'
-LAT = 34.0489
-LON = 111.0937
-OUTPUT = 'data/weatherData.csv'
+START_DATE = '1990-07-01'
+END_DATE = '2025-07-31'
+LAT = 33.44838
+LON = -112.07404
+OUTPUT = 'data/weatherDataPhoenix.csv'
 
 if __name__ == '__main__':
-    run_pipeline(API_KEY, LAT, LON, OUTPUT)
+    run_pipeline(LAT, LON, START_DATE, END_DATE, OUTPUT)

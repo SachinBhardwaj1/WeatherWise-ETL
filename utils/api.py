@@ -1,22 +1,20 @@
 import requests
-import datetime
 
-def fetch_weather_data(api_key, lat, lon, days=7):
-    base_url = "https://api.openweathermap.org/data/2.5/onecall/timemachine"
-    all_data = []
+def fetch_openmeteo_weather(lat, lon, start_date, end_date):
+    base_url = "https://archive-api.open-meteo.com/v1/archive"
+    params = {
+        'latitude': lat,
+        'longitude': lon,
+        'start_date': start_date,
+        'end_date': end_date,
+        'timezone': 'America/Phoenix',
+        'daily': (
+            'temperature_2m_max,temperature_2m_min,'
+            'relative_humidity_2m_max,relative_humidity_2m_min,'
+            'precipitation_sum'
+        )
+    }
+    response = requests.get(base_url, params=params)
+    response.raise_for_status()
+    return response.json()
 
-    for day in range(days):
-        dt = int((datetime.datetime.now() - datetime.timedelta(days=day)).timestamp())
-        params = {
-            'lat': lat,
-            'lon': lon,
-            'dt': dt,
-            'appid': api_key,
-            'units': 'metric'
-        }
-        res = requests.get(base_url, params=params)
-        if res.status_code == 200:
-            all_data.append(res.json())
-        else:
-            print(f"Failed to fetch data for {dt}")
-    return all_data
